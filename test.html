@@ -1,0 +1,503 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>我的购物网---网页定位导航</title>
+<style type="text/css">
+  *{
+	    margin:0;
+	    padding:0;  
+   }
+ body{
+	    font-size:12px;
+		line-height:1.7;
+	  }
+ li{
+	    list-style:none;
+	  }
+ a{  
+        text-decoration:none;
+		color: #09c;
+         }
+ a:hover{ color:#930;}
+ #content{
+	    width:800px;
+		margin:0 auto;
+		padding:20px;
+		
+	   }
+ #content .header h1{
+	    color:#0088bb;
+		float:left;
+	 }
+ #content .header span{
+	    float:right;
+		padding-top:20px;
+	 }
+ #content .item{
+	    width:758px;
+		overflow:hidden;
+		margin-bottom:20px;
+		padding:20px; 
+	    border:2px dotted #0088bb;
+	 }
+ 
+ #content .item h2{
+	    font-size:16px;
+		font-weight:bold;
+		border-bottom:2px solid #0088bb;
+		margin-bottom:10px;
+	  }
+ #content .item li{
+	    /*display:inline;*/
+		margin:0 8px;
+		float:left;
+	  }
+
+ #content .item li a img{
+	    width:230px;
+		height:230px;
+		border:1px solid #ccc;
+		box-shadow:0 0 5px;
+		-webkit-box-shadow:0 0 5px;
+		-moz-box-shadow:0 0 5px;
+		-ms-box-shadow:0 0 5px;
+		-o-transition:box-shadow:0 0 5px;	 
+	 }
+	 
+  #content .wrap  {
+            display:block;
+            width:230px; 
+            height:230px; 
+            position:relative; 
+            overflow:hidden;
+            font-family:arial, sans-serif;
+			border:1px solid green; 
+        }
+#content .wrap img{ 
+        
+            border:0;
+            width:230px;
+            height:230px; 
+        }
+ .wrap .texts {
+	 /*此处不能加#content*/
+            width:230px; 
+            height:230px; 
+            position:absolute; 
+            left:0; 
+            top:200px; 
+            background-color:rgba(0,0,0,0.8);/*使用CSS3 RGBA颜色值*/
+			-webkit-background-color:rgba(0,0,0,0.8);
+			-moz-background-color:rgba(0,0,0,0.8);
+			-ms-background-color:rgba(0,0,0,0.8);
+			-o-background-color:rgba(0,0,0,0.8);
+            font-size:12px; 
+            color:#FFFFFF; 
+            padding:0; 
+            margin:0; 
+            transition: all 0.6s ease-in-out;/*定义CSS3过渡效果,all表示过渡属性针对所有值有变化的CSS属性*/
+			-webkit-transition: all 0.6s ease-in-out;
+			-moz-transition: all 0.6s ease-in-out;
+			-ms-transition: all 0.6s ease-in-out;
+			-o-transition: all 0.6s ease-in-out;
+        }
+#content .wrap .texts b {
+            display:block; 
+            color:#08b; 
+            text-align:center;
+            margin:0; 
+            padding:0; 
+            height:30px;
+			font-size:18px;
+			font-family:"微软雅黑";
+         }
+       
+ #content .wrap.texts span {
+			height:200px;
+			}
+ #content .wrap.texts dl{
+		  width:230px;
+		  line-height:16px;
+		  text-weight:bold;
+		  overflow:hidden;
+		  border:1px solid pink;
+		  }
+     dl dt{
+	       font-size:13px;
+		   color:#09b;
+		   font-family:"微软雅黑";
+          }
+#content .wrap:hover .texts {top:0;}     	
+ #menu{
+	    width:80px;
+		position:fixed;
+		top:200px;
+		left:50%;
+		margin-left:400px; 
+	 }
+ #menu ul li a{
+	    display:block;
+		margin:5px 0;
+		font-size:14px;
+		font-weight:bold;
+		color: #333;
+		width: 80px;
+		height: 50px;
+		line-height:50px;
+		text-decoration: none;
+		text-align:center;
+		border:1px solid #ccc;
+		 
+	 }
+	  
+	 #menu ul li a:hover,
+	 #menu ul li a.current{
+		 color:#fff;
+		 background:#0088bb;
+		 
+		/*<!-- stopPropagation();-->*/
+		  }
+	/**ie6的兼容性 hack使用 **/
+	*html,*html body{
+		 background-image:url(about:blank);
+		 background-attachment:fixed;
+		
+		}
+	*html menu{
+		 position:absolute;
+		 top:expression(((e=document.documentElement.scollTop)?e:document.body.scollTop)+100+'px');
+		}
+    
+</style>
+<script src="http://libs.baidu.com/jquery/1.10.2/jquery.min.js"></script>
+<script>
+      $(document).ready(function(){
+        $(window).scroll(function(){   
+       
+            //滚动条发生滚动时，要获取相应的值。
+	       // var top=$(document).scrollTop();
+            var top=$(document).scrollTop(),
+                menus=$('#menu'),
+                items=$('#content').find('.item'),
+                currentid=" ";
+            //请补充此处代码，让导航菜单实现在滚动条滚动的时候自动设置焦点
+            items.each(function(){
+                var itemtop=$(this).offset().top;
+                if(top>itemtop-200){
+                    currentid="#"+$(this).attr('id');
+					var currentlink=menus.find("[href="+currentid+"]");
+            menus.find('.current').removeClass('current');
+              currentlink.addClass('current'); 
+                }else{
+				  return false;	
+			    }
+            })
+
+            //给相应楼层的a 设置 current，取消其他链接的current
+			//var currentlink=menus.find("[href="+currentid+"]");
+            //menus.find('.current').removeClass('current');
+             // currentlink.addClass('current');  
+        });     
+    });
+</script> 
+ <!--<script>
+  function getElementsByClassName(obj,cls){
+	       var elements=obj.getElementsByTagName("*"),
+		       result=[];
+			for(var i=0;i<elements.length;i++){
+				if(elements[i].className==cls){
+					    result.push(elements[i]);
+					}
+				}
+	          return result;
+	  
+	  }
+  function hasclass(obj,cls){
+	  //是否有这个class
+	  return obj.className.match(new RegExp("(\\s|^)"+cls+"(\\s|$)"));
+	   
+	  }
+  function removeClass(obj,cls){
+	  if(hasclass(obj,cls)){
+	      //removeclass
+		  var reg=new RegExp("(\\s|^)"+cls+"(\\s|$)"); 
+		  obj.className=obj.className.replace(reg,"");
+	  }
+  }
+  function addClass(obj,cls){
+	  if(!hasclass(obj,cls)){
+		 //addclass
+		 obj.className+= " " +cls;
+	  }
+	  }
+    window.onload=function(){
+		
+		window.onscroll=function(){
+			var top=document.documentElement.scollTop||document.body.scrollTop;
+			  
+			var menus=document.getElementById("menu").getElementsByTagName("a");
+			  
+		    var items=getElementsByClassName(document.getElementById("content"),"item");
+				
+				var currentId="";
+				for(var i=0;i<items.length;i++){
+					
+					var _item=items[i];
+					var _itemTop=_item.offsetTop;
+					
+					if(top>_itemTop){
+						currentId=_item.id;
+				
+					}else{
+							break;
+					}
+					
+					}
+					//console.log("currentId");
+			    if(currentId){
+					for(var j=0;j<menus.length;j++){
+						 var _menu=menus[j];
+						 var _href=_menu.href.split("#");
+						    if(_href[_href.length-1]!=currentId){
+								removeClass(_menu,"current");
+								
+							  }else{
+								addClass(_menu,"current");	
+									
+							  }
+						
+						}
+					
+					
+					
+					}
+			
+			
+			
+			
+			
+			}
+		
+		
+		
+		}
+ </script>-->
+
+</head>
+<body>
+ <div id="menu">
+   <ul>
+     <li><a href="#item1" class="current">1F 男装</a></li>
+     <li><a href="#item2">2F 女装</a></li>
+     <li><a href="#item3">3F 美妆</a></li>
+     <li><a href="#item4">4F 母婴</a></li>
+     <li><a href="#item5">5F 数码 </a></li>
+   </ul>
+ </div>
+ 
+ <div id="content">
+    <div class="header">
+      <h1>我的购物网</h1>
+      <span><a href="#">购物车</a><a href="#">【注册】</a><a href="#">【登录】</a></span>
+    </div>
+    <div id="item1" class="item">
+     <h2>1F 男装</h2>
+     <ul >
+      <li class="wrap">
+         <a href="#"><img src="images/1.1.jpg"></a>
+        <div class="texts">
+         <b>男装分类</b>
+           <span >
+             <dl>
+               <dt><a href="#">时尚男装</a></dt>
+               <dd><a href="#"> 秋冬新品|</a><a href="#"> 淘特莱斯|</a><a href="#"> 淘先生|</a><a href="#"> 拾货|</a>
+                   <a href="#"> 秋冬外套|</a><a href="#"> 时尚套装|</a><a href="#"> 潮牌|</a><a href="#"> 爸爸装|</a>
+               </dd>
+             </dl>
+             <dl>
+               <dt><a href="#">男士裤子</a></dt>
+               <dd><a href="#">休闲裤|</a><a href="#">工装裤|</a><a href="#"> 运动裤|</a><a href="#"> 长裤|</a>
+                   <a href="#"> 牛仔裤|</a><a href="#">小脚裤|</a><a href="#">哈伦裤|</a><a href="#"> 直筒裤|</a>
+               </dd>
+             </dl>
+             <dl>
+               <dt><a href="#">衬衫/T恤</a></dt>
+               <dd><a href="#"> T恤|</a><a href="#">长袖T|</a><a href="#">打底衫|</a><a href="#"> 纯色|</a>
+                   <a href="#"> 牛仔裤|</a><a href="#">小脚裤|</a><a href="#">哈伦裤|</a><a href="#"> 直筒裤|</a>
+               </dd>
+            </dl>
+           </span>
+         </div>
+       </li>
+       <li><a href="#"><img src="images/1.2.jpg"></a></li>
+       <li><a href="#"><img src="images/1.3.jpg"></a></li>
+       <li><a href="#"><img src="images/1.4.jpg"></a></li>
+       <li><a href="#"><img src="images/1.5.jpg"></a></li>
+       <li><a href="#"><img src="images/1.6.jpg"></a></li>
+       <li><a href="#"><img src="images/1.7.jpg"></a></li>
+       <li><a href="#"><img src="images/1.8.jpg"></a></li>
+       <li><a href="#"><img src="images/1.9.jpg"></a></li>
+     </ul>
+    </div>
+    
+     <div id="item2" class="item">
+     <h2>2F 女装</h2>
+     <ul>
+       <li class="wrap"><a href="#"><img src="images/2.1.jpg"></a>
+        <div class="texts">
+         <b>女装分类</b>
+           <span >
+             <dl>
+               <dt><a href="#">潮流女装</a></dt>
+               <dd><a href="#"> 羽绒服|</a><a href="#">毛呢大衣|</a><a href="#"> 毛衣|</a><a href="#">冬季外套|</a>
+                   <a href="#"> 新品|</a><a href="#"> 裤子|</a><a href="#">连衣裙|</a><a href="#">腔调|</a>
+               </dd>
+             </dl>
+             <dl>
+               <dt><a href="#">毛衣外套</a></dt>
+               <dd><a href="#"> 廓形| </a><a href="#"> 双面呢|</a><a href="#"> 短款|</a><a href="#">设计师款|</a>
+                   <a href="#"> 卫衣|</a><a href="#">  套装|</a><a href="#"> 系带|</a><a href="#"> 毛领|</a>
+               </dd>
+             </dl>
+             <dl>
+               <dt><a href="#">家居服</a></dt>
+               <dd><a href="#">  睡衣套装|</a><a href="#"> 睡裙|</a><a href="#"> 睡袍浴袍|</a><a href="#">外穿家居|</a>
+                   <a href="#"> 女士睡衣|</a><a href="#"> 男士睡衣|</a><a href="#">情侣睡衣|</a><a href="#">亲子睡衣|</a>
+               </dd>
+             </dl>
+           </span>
+         </div>
+       </li>
+       <li><a href="#"><img src="images/2.2.jpg"></a></li>
+       <li><a href="#"><img src="images/2.3.jpg"></a></li>
+       <li><a href="#"><img src="images/2.4.jpg"></a></li>
+       <li><a href="#"><img src="images/2.5.jpg"></a></li>
+       <li><a href="#"><img src="images/2.6.jpg"></a></li>
+       <li><a href="#"><img src="images/2.7.jpg"></a></li>
+       <li><a href="#"><img src="images/2.8.jpg"></a></li>
+       <li><a href="#"><img src="images/2.9.jpg"></a></li>
+     </ul>
+    </div>
+    
+     <div id="item3" class="item">
+     <h2>3F 美妆</h2>
+     <ul>
+       <li class="wrap"><a href="#"><img src="images/3.1.jpg"></a>
+         <div class="texts">
+         <b>美妆分类</b>
+           <span >
+             <dl>
+               <dt><a href="#">美妆护肤</a></dt>
+               <dd><a href="#"> 卸妆|</a><a href="#"> 面膜|</a><a href="#">洁面|</a><a href="#"> 防晒|</a>
+                   <a href="#"> 面霜|</a><a href="#"> 爽肤水|</a><a href="#">眼霜|</a><a href="#">乳液|</a>
+               </dd>
+             </dl>
+             <dl>
+               <dt><a href="#">香氛精油</a></dt>
+               <dd><a href="#"> 女士香水|</a><a href="#"> 男士香水|</a><a href="#"> 中性香水|</a><a href="#"> 淡香水|</a>
+                   <a href="#"> 古龙水|</a><a href="#"> 香精|</a><a href="#"> 复方精油|</a><a href="#">香体乳|</a>
+               </dd>
+             </dl>
+             <dl>
+               <dt><a href="#">眼部彩妆</a></dt>
+               <dd><a href="#">  眼线| </a><a href="#">  睫毛膏|</a><a href="#"> 眼影|</a><a href="#"> 眉笔|</a>
+                   <a href="#"> 假睫毛|</a><a href="#">眼霜|</a><a href="#">双眼皮贴|</a><a href="#">眼部护理|</a>
+               </dd>
+             </dl>
+           </span>
+         </div>
+       </li>
+       <li><a href="#"><img src="images/3.2.jpg"></a></li>
+       <li><a href="#"><img src="images/3.3.jpg"></a></li>
+       <li><a href="#"><img src="images/3.4.jpg"></a></li>
+       <li><a href="#"><img src="images/3.5.jpg"></a></li>
+       <li><a href="#"><img src="images/3.6.jpg"></a></li>
+       <li><a href="#"><img src="images/3.7.jpg"></a></li>
+       <li><a href="#"><img src="images/3.8.jpg"></a></li>
+       <li><a href="#"><img src="images/3.9.jpg"></a></li>
+     </ul>
+    </div>
+    
+     <div id="item4" class="item">
+     <h2>4F  母婴</h2>
+     <ul>
+       <li class="wrap"><a href="#"><img src="images/4.1.jpg"></a>
+         <div class="texts">
+         <b>母婴分类</b>
+           <span >
+             <dl>
+               <dt><a href="#"> 宝宝奶粉</a></dt>
+               <dd><a href="#">  英国牛栏|</a><a href="#">英国爱他美|</a><a href="#">美赞臣|</a><a href="#">雅培|</a>
+                   <a href="#"> 澳洲爱他美|</a><a href="#">可瑞康|</a><a href="#">惠氏|</a><a href="#"> 贝因美|</a>
+               </dd>
+             </dl>
+             <dl>
+               <dt><a href="#">婴孩用品</a></dt>
+               <dd><a href="#"> 推车|</a><a href="#"> 驱蚊器|</a><a href="#">婴儿床|</a><a href="#"> 理发器|</a>
+                   <a href="#"> 奶瓶|</a><a href="#">  餐椅|</a><a href="#"> 背带腰凳|</a><a href="#"> 安全座椅|</a>
+               </dd>
+             </dl>
+             <dl>
+               <dt><a href="#">童装</a></dt>
+               <dd><a href="#"> T恤|</a><a href="#"> 连衣裙|</a><a href="#"> 泳装|</a><a href="#"> 套装|</a>
+                   <a href="#"> 衬衫|</a><a href="#"> 防晒服|</a><a href="#"> 半身裙|</a><a href="#">短裤|</a>
+               </dd>
+             </dl>
+           </span>
+         </div>
+       </li>
+       <li><a href="#"><img src="images/4.2.jpg"></a></li>
+       <li><a href="#"><img src="images/4.3.jpg"></a></li>
+       <li><a href="#"><img src="images/4.4.jpg"></a></li>
+       <li><a href="#"><img src="images/4.5.jpg"></a></li>
+       <li><a href="#"><img src="images/4.6.jpg"></a></li>
+       <li><a href="#"><img src="images/4.7.jpg"></a></li>
+       <li><a href="#"><img src="images/4.8.jpg"></a></li>
+       <li><a href="#"><img src="images/4.9.jpg"></a></li>
+     </ul>
+    </div>
+    
+     <div id="item5" class="item">
+     <h2>5F 数码</h2>
+     <ul>
+       <li class="wrap"><a href="#"><img src="images/5.1.jpg"></a>
+        <div class="texts">
+         <b>数码分类</b>
+           <span >
+             <dl>
+               <dt><a href="#">数码配件</a></dt>
+               <dd><a href="#"> 保护壳套|</a><a href="#"> 炫彩贴膜|</a><a href="#"> 移动电源|</a><a href="#">相机配件|</a>
+                   <a href="#"> 手机零件|</a><a href="#"> 自拍神器|</a><a href="#"> 移动POS支付|</a><a href="#"> 电池|</a>
+               </dd>
+             </dl>
+             <dl>
+               <dt><a href="#">电脑</a></dt>
+               <dd><a href="#">  DIY电脑|</a><a href="#"> 一体机|</a><a href="#"> 路由器|</a><a href="#"> 显示器|</a>
+                   <a href="#"> 学生|</a><a href="#"> CPU</a><a href="#">移动硬盘</a><a href="#">无线鼠标</a>
+               </dd>
+             </dl>
+             <dl>
+               <dt><a href="#">电玩</a></dt>
+               <dd><a href="#">  游戏掌机|</a><a href="#"> 家用游戏机|</a><a href="#">游戏手柄|</a><a href="#"> PS主机|</a>
+                   <a href="#">  XBOX|</a><a href="#"> 任天堂配件|</a><a href="#"> PS主机配件|</a><a href="#">XBOX配件|</a>
+               </dd>
+             </dl>
+           </span>
+         </div>
+       </li>
+       <li><a href="#"><img src="images/5.2.jpg"></a></li>
+       <li><a href="#"><img src="images/5.3.jpg"></a></li>
+       <li><a href="#"><img src="images/5.4.jpg"></a></li>
+       <li><a href="#"><img src="images/5.5.jpg"></a></li>
+       <li><a href="#"><img src="images/5.6.jpg"></a></li>
+       <li><a href="#"><img src="images/5.7.jpg"></a></li>
+       <li><a href="#"><img src="images/5.8.jpg"></a></li>
+       <li><a href="#"><img src="images/5.9.jpg"></a></li>
+     </ul>
+    </div>
+    
+ </div>
+</body>
+
+</html>
